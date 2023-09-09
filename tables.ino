@@ -43,10 +43,19 @@ void createXTable(void) {
   xTable[29] = 0x2E;
   xTable[30] = 0x1E;
   xTable[31] = 0x2B;
+}void createDecYTable(void) {
+
 }
 
+void createDecXTable(void) {
+
+}
 void createEncodeTables(void) {
   createXTable();
   createYTable();
 }
 
+void createDecodeTables(void) {
+  createDecXTable();
+  createDecYTable();
+}
