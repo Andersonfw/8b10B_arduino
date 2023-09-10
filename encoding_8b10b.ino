@@ -9,18 +9,27 @@ void serialEvent() {
   int length = message.length() + 1;
 
   unsigned char dataPreEncode[length]; 
-  strcpy(dataPreEncode, message.c_str());
+  strcpy((char*)dataPreEncode, message.c_str());
 
-  unsigned int dataPostEncode[(length)];
-
-  for(int i = 0; i < length; i++)
+  unsigned int dataPostEncode[length];
+  
+  for(int i = 0; i < length; i++){
+    Serial.println(dataPreEncode[i]);
+  }
+  
+  for(int i = 0; i < length; i++){
     dataPostEncode[i] = encode8B10B(dataPostEncode[i]);
+    Serial.println(dataPostEncode[i], HEX);
+  }
   
   Wire.beginTransmission(I2C_DEV_ADDR);
-  for(int i = 0; i < length; i++)
-    Wire.write(dataPostEncode[i]);
+  for(int i = 0; i < length; i++){
+    Wire.write(highByte(dataPostEncode[i]));
+    Wire.write(lowByte(dataPostEncode[i]));
+  }
   Wire.endTransmission();
 }
+
 
 void setup() {
 
