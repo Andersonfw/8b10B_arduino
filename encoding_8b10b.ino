@@ -1,5 +1,5 @@
 /* ---------- Variáveis globais necessárias para a codificação ---------- */
-unsigned char xTable[32], yTable[9];
+unsigned char xTable[32], yTable[9], xDecTable[59], yTable[14];
 char rd;
 
 struct flag3B {
