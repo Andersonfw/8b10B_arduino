@@ -3,7 +3,7 @@
 #define I2C_DEV_ADDR 0x55
 
 /* ---------- Variáveis globais necessárias para a codificação ---------- */
-unsigned char xTable[32], yTable[9], xDecTable[59], yTable[14];
+unsigned char xTable[32], yTable[9], xDecTable[59], yDecTable[14];
 char rd;
 
 struct flag3B {
@@ -26,7 +26,7 @@ void serialEvent() {
     dataPostEncode[i] = encode8B10B(dataPostEncode[i]);
   
   Wire.beginTransmission(I2C_DEV_ADDR);
-  for(int i = 0; i < message.length() + 1; i++)
+  for(int i = 0; i < lenght; i++)
     Wire.write(dataPostEncode[i]);
   Wire.endTransmission();
 }

@@ -24,8 +24,8 @@ unsigned int decode8B10B(unsigned char data) {
   dec3B = decode3B4B(data4B);  // (fghj)
   
   decoded = (unsigned int) dec3B;
-  decoded = encoded << 5;             // (HGF00000)
-  encoded = encoded | dec5B;          // (HGFEDCBA)
+  decoded = decoded << 5;             // (HGF00000)
+  decoded = decoded | dec5B;          // (HGFEDCBA)
    
   return decoded;
 }
