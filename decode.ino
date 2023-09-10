@@ -12,7 +12,7 @@ unsigned char decode5B6B(unsigned char data) {
   return dec;
 }
 
-unsigned int decode8B10B(unsigned char data) {
+unsigned char decode8B10B(unsigned int data) {
   
   unsigned int decoded;
   unsigned char data6B, dec5B, data4B, dec3B;
