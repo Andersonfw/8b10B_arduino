@@ -1,3 +1,10 @@
+unsigned char xTable[32], yTable[9];
+char rd;
+
+struct flag3B {
+  char inv, y7Neg, y7Pos;
+};
+
 char bitDisparity(unsigned int data, unsigned char bits) {
 
   unsigned char ones = 0, zeros = 0;

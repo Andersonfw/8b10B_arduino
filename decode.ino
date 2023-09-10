@@ -1,3 +1,5 @@
+unsigned char xDecTable[59], yDecTable[14];
+
 unsigned char decode3B4B(unsigned char data) {
   unsigned char dec;
    dec = yDecTable[data];
@@ -14,7 +16,6 @@ unsigned int decode8B10B(unsigned char data) {
   
   unsigned int decoded;
   unsigned char data6B, dec5B, data4B, dec3B;
-  struct flag3B flags;
   
   data6B = data & 0x3F0; // 6 bits mais significativos  (abcdei0000; 0x3F0 = 11 1111 0000)
   data4B = data & 0x00F; // 4 bits menos significativos (000000fghj; 0x00F = 00 0000 1111)

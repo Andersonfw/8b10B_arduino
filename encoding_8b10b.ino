@@ -2,31 +2,22 @@
 
 #define I2C_DEV_ADDR 0x55
 
-/* ---------- Variáveis globais necessárias para a codificação ---------- */
-unsigned char xTable[32], yTable[9], xDecTable[59], yDecTable[14];
-char rd;
-
-struct flag3B {
-  char inv, y7Neg, y7Pos;
-};
-/* ---------------------------------------------------------------------- */
-
 unsigned int inX, inY;
 
 void serialEvent() {
   String message = Serial.readString();
-  int lenght = message.length() + 1;
+  int length = message.length() + 1;
 
-  unsigned char dataPreEncode[lenght]; 
+  unsigned char dataPreEncode[length]; 
   strcpy(dataPreEncode, message.c_str());
 
-  unsigned int dataPostEncode[(lenght)];
+  unsigned int dataPostEncode[(length)];
 
-  for(int i = 0; i < lenght; i++)
+  for(int i = 0; i < length; i++)
     dataPostEncode[i] = encode8B10B(dataPostEncode[i]);
   
   Wire.beginTransmission(I2C_DEV_ADDR);
-  for(int i = 0; i < lenght; i++)
+  for(int i = 0; i < length; i++)
     Wire.write(dataPostEncode[i]);
   Wire.endTransmission();
 }
@@ -79,7 +70,7 @@ void loop() {
   Serial.print(f, BIN);
   Serial.print('\t');
 
-  r = rd = 1;
+  /*r = rd = 1;
   output = encode8B10B(input);
   Serial.print("RD :");
   Serial.println(rd,DEC);
@@ -100,7 +91,7 @@ void loop() {
   Serial.print("RD :");
   Serial.println(rd,DEC);
   Serial.print("saida:  ");
-  Serial.println(output, BIN);
+  Serial.println(output, BIN);*/
   // a = (output & 0x3F0) >> 4;
   // f = output & 0xF;
 
