@@ -1,3 +1,7 @@
+#include <Wire.h>
+
+#define I2C_DEV_ADDR 0x55
+
 /* ---------- Variáveis globais necessárias para a codificação ---------- */
 unsigned char xTable[32], yTable[9], xDecTable[59], yTable[14];
 char rd;
@@ -9,6 +13,24 @@ struct flag3B {
 
 unsigned int inX, inY;
 
+void serialEvent() {
+  String message = Serial.readString();
+  int lenght = message.length() + 1;
+
+  unsigned char dataPreEncode[lenght]; 
+  strcpy(dataPreEncode, message.c_str());
+
+  unsigned int dataPostEncode[(lenght)];
+
+  for(int i = 0; i < lenght; i++)
+    dataPostEncode[i] = encode8B10B(dataPostEncode[i]);
+  
+  Wire.beginTransmission(I2C_DEV_ADDR);
+  for(int i = 0; i < message.length() + 1; i++)
+    Wire.write(dataPostEncode[i]);
+  Wire.endTransmission();
+}
+
 void setup() {
 
   setup8B10B();
@@ -16,6 +38,8 @@ void setup() {
   Serial.begin(9600);
   Serial.print("    \t Y \t  X  \tCURRENT RD- \tCURRENT RD+ \t  \n");
   Serial.print("DX.Y\tHGF\tEDCBA\tabcdei\tfghj\tabcdei\tfghj\tRD-\tRD+\n");
+
+  Wire.begin();
 }
 
 void loop() {
