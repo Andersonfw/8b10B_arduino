@@ -18,7 +18,7 @@ void serialEvent() {
   }
   
   for(int i = 0; i < length; i++){
-    dataPostEncode[i] = encode8B10B(dataPostEncode[i]);
+    dataPostEncode[i] = encode8B10B(dataPreEncode[i]);
     Serial.println(dataPostEncode[i], HEX);
   }
   
