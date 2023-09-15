@@ -6,28 +6,54 @@ unsigned int inX, inY;
 
 void serialEvent() {
   String message = Serial.readString();
-  int length = message.length() + 1;
+  int length = message.length() +1;
+  int total_Lenght = length;
+  int leght_remaining = length;
+  Serial.println("--------------------------------------------------------------------------------------------------------------");
+
+
+  Serial.print("Mensagem a ser enviada:");
+  Serial.print(message);
+  Serial.println("Tamanho: ");
+  Serial.println(length);
+
+
 
   unsigned char dataPreEncode[length]; 
-  strcpy((char*)dataPreEncode, message.c_str());
+  for(int i = 0; i < length; i++){
+  dataPreEncode[i] = message[i];
+ }
+  // strcpy((char*)dataPreEncode, message.c_str());
 
   unsigned int dataPostEncode[length];
   
+  Serial.println("Dado bufferizado antes do encode:");
   for(int i = 0; i < length; i++){
-    Serial.println(dataPreEncode[i]);
+    Serial.print(dataPreEncode[i]);
+    Serial.print("(");
+    char t = dataPreEncode[i];
+    Serial.print(t);
+    Serial.print(")");
+    Serial.print(" -- ");
   }
-  
+  Serial.println("");
+
+ Serial.println("Dado codificado para ser enviado:");
   for(int i = 0; i < length; i++){
     dataPostEncode[i] = encode8B10B(dataPreEncode[i]);
-    Serial.println(dataPostEncode[i], HEX);
+    Serial.print(dataPostEncode[i], HEX);
+    Serial.print(" -- ");
   }
   
+    Serial.println("");
   Wire.beginTransmission(I2C_DEV_ADDR);
   for(int i = 0; i < length; i++){
     Wire.write(highByte(dataPostEncode[i]));
     Wire.write(lowByte(dataPostEncode[i]));
   }
   Wire.endTransmission();
+
+  Serial.println("--------------------------------------------------------------------------------------------------------------");
 }
 
 
@@ -44,18 +70,18 @@ void setup() {
 
 void loop() {
 
-  unsigned int input, output;
-  unsigned int a, f;
-  char r;
+  // unsigned int input, output;
+  // unsigned int a, f;
+  // char r;
 
-  char datachar = 'S'; // Dado a ser transmitido
-  input = int(datachar);
-  Serial.print("Dado a ser codificado:");
-  Serial.print(datachar);
-  Serial.print("  -----  ");
-  Serial.print(input, BIN);
-  Serial.print("  -----  ");
-  Serial.println(input);
+  // char datachar = 'S'; // Dado a ser transmitido
+  // input = int(datachar);
+  // Serial.print("Dado a ser codificado:");
+  // Serial.print(datachar);
+  // Serial.print("  -----  ");
+  // Serial.print(input, BIN);
+  // Serial.print("  -----  ");
+  // Serial.println(input);
 
   // Serial.print('D');
   // Serial.print(inX, DEC);
@@ -69,15 +95,17 @@ void loop() {
 
   // rd = -1;
   // input = (inY << 5) | inX;
-  output = encode8B10B(input);
+  // output = encode8B10B(input);
 
-  a = (output & 0x3F0) >> 4;
-  f = output & 0xF;
+  // Serial.print("output: ");
+  // Serial.println(output, BIN);
+  // a = (output & 0x3F0) >> 4;
+  // f = output & 0xF;
 
-  Serial.print(a, BIN);
-  Serial.print('\t');
-  Serial.print(f, BIN);
-  Serial.print('\t');
+  // Serial.print(a, BIN);
+  // Serial.print('\t');
+  // Serial.print(f, BIN);
+  // Serial.print('\t');
 
   /*r = rd = 1;
   output = encode8B10B(input);
@@ -122,6 +150,10 @@ void loop() {
   // if (inX >= 32)
   //   while (1)
   //     ;
-  while (1);
+
+    if (Serial.available() > 0){
+          // turn on or off depending on Serial.read()
+          serialEvent();
+    }
 
 }
