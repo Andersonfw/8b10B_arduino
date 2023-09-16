@@ -1,6 +1,9 @@
 #include <Wire.h>
-
+#include <Manchester.h>
 #define I2C_DEV_ADDR 0x55
+
+#define TX_PIN  12
+#define MAN_1200  1200
 
 unsigned int inX, inY;
 
@@ -20,10 +23,7 @@ void serialEvent() {
 
 
   unsigned char dataPreEncode[length]; 
-  for(int i = 0; i < length; i++){
-  dataPreEncode[i] = message[i];
- }
-  // strcpy((char*)dataPreEncode, message.c_str());
+  strcpy((char*)dataPreEncode, message.c_str());
 
   unsigned int dataPostEncode[length];
   
@@ -53,19 +53,26 @@ void serialEvent() {
   }
   Wire.endTransmission();
 
+
+  // for(int i = 0; i < length; i++){
+  //   man.transmit(highByte(dataPostEncode[i]));
+  //   man.transmit(lowByte(dataPostEncode[i]));
+  // }
+
   Serial.println("--------------------------------------------------------------------------------------------------------------");
 }
 
 
 void setup() {
 
+pinMode(TX_PIN, OUTPUT);
   setup8B10B();
   inX = inY = 0;
   Serial.begin(9600);
-  Serial.print("    \t Y \t  X  \tCURRENT RD- \tCURRENT RD+ \t  \n");
-  Serial.print("DX.Y\tHGF\tEDCBA\tabcdei\tfghj\tabcdei\tfghj\tRD-\tRD+\n");
-
+  Serial.print("  INICIO DO ENCODER ");
+  man.setupTransmit(TX_PIN, MAN_1200);
   Wire.begin();
+  man.transmit(33);
 }
 
 void loop() {
